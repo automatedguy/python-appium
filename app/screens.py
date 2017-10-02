@@ -16,9 +16,10 @@ class BaseScreen(object):
     def __init__(self, driver):
         self.driver = driver
 
-    def wait_for_element(self, locator, description, obj):
-        self.logger.info(WAITING_FOR_MSG + " [" + description + "] " + obj)
-        WebDriverWait(self.driver, 100).until(lambda driver: driver.find_element_by_xpath(locator))
+    def wait_for_element(self, element, locator, description, obj):
+        driver = element.driver
+        self.logger.info(WAITING_FOR_MSG + "[" + description + "] " + obj)
+        WebDriverWait(driver, 100).until(lambda driver: driver.find_element_by_xpath(locator))
         return self.driver.find_element_by_xpath(locator)
 
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -26,18 +27,22 @@ class BaseScreen(object):
 
 
 class WelcomeScreen(BaseScreen):
+    def __init__(self, driver):
+        super(WelcomeScreen, self).__init__(driver)
+        self.driver = driver
+
     def touch_argentina(self):
-        element = self.wait_for_element(locators.WelcomeScreen.ARGENTINA_LINK, ARGENTINA, LINK)
+        element = self.wait_for_element(self, locators.WelcomeScreen.ARGENTINA_LINK, ARGENTINA, LINK)
         self.logger.info(TOUCH_ARG_LINK_MSG)
         element.click()
 
     def touch_colombia(self):
-        element = self.wait_for_element(locators.WelcomeScreen.COLOMBIA_LINK, COLOMBIA, LINK)
+        element = self.wait_for_element(self, locators.WelcomeScreen.COLOMBIA_LINK, COLOMBIA, LINK)
         self.logger.info(TOUCH_COL_LINK_MSG)
         element.click()
 
     def touch_mexico(self):
-        element = self.wait_for_element(locators.WelcomeScreen.MEXICO_LINK, MEXICO, LINK)
+        element = self.wait_for_element(self, locators.WelcomeScreen.MEXICO_LINK, MEXICO, LINK)
         self.logger.info(TOUCH_MEX_LINK_MSG)
         element.click()
 
@@ -53,11 +58,15 @@ class WelcomeScreen(BaseScreen):
             self.touch_mexico()
         else:
             self.errhandler()
-        return LoginScreen(self)
+        return LoginScreen(self.driver)
 
 
 class LoginScreen(BaseScreen):
+    def __init__(self, driver):
+        super(LoginScreen, self).__init__(driver)
+        self.driver = driver
+
     def touch_seguir_como_invitado(self):
-        element = self.wait_for_element(locators.LoginScreen.SEGUIR_COMO_INVITADO_LNK, SEGUIR_COMO_INVITADO, LINK)
+        element = self.wait_for_element(self, locators.LoginScreen.SEGUIR_COMO_INVITADO_LNK, SEGUIR_COMO_INVITADO, LINK)
         self.logger.info(SEGUIR_COMO_INVITADO_MSG)
         element.click()

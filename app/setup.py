@@ -7,6 +7,7 @@ import unittest
 from appium import webdriver
 
 # Returns abs path relative to this file and not cwd
+from app.constants.messages import DRIVER_SUCCESS, TEAR_DOWN
 from app.screens import WelcomeScreen
 from constants.countries import ARG
 from constants.platforms import ANDROID, V5_O1_O1, LOLLIPOP, APK_FILE
@@ -30,6 +31,7 @@ class BaseTest(unittest.TestCase):
 
     def setUp(self):
         pass
+
         logging.info("Setting Up Mobile Capabilities.")
         self.desired_caps['platformName'] = self.PLATFORM_NAME
         self.desired_caps['platformVersion'] = self.PLATFORM_VERSION
@@ -38,12 +40,8 @@ class BaseTest(unittest.TestCase):
         self.desired_caps['noReset'] = False
 
         self.show_capabilities()
-
-        self.logger.info("Starting " + self.PLATFORM_NAME + " driver please wait...")
-        self.app = webdriver.Remote('http://localhost:4723/wd/hub', self.desired_caps)
-
-        welcome_screen = WelcomeScreen(self.app)
-        welcome_screen.select_country(self.COUNTRY)
+        self.launch_app()
+        self.navigate_to_home()
 
     def show_capabilities(self):
         self.logger.info("Platform Name: [" + self.desired_caps['platformName'] + "]")
@@ -52,9 +50,18 @@ class BaseTest(unittest.TestCase):
         self.logger.info("App File: [" + self.desired_caps['app'] + "]")
         self.logger.info("Country: [" + self.COUNTRY + "]")
 
+    def launch_app(self):
+        self.logger.info("Starting " + self.PLATFORM_NAME + " driver please wait...")
+        self.app = webdriver.Remote('http://localhost:4723/wd/hub', self.desired_caps)
+        self.logger.info(self.PLATFORM_NAME + DRIVER_SUCCESS)
+
+    def navigate_to_home(self):
+        welcome_screen = WelcomeScreen(self.app)
+        welcome_screen.select_country(self.COUNTRY)
+
     def tearDown(self):
         pass
-        self.logger.info("Tearing Down Driver.")
+        self.logger.info(TEAR_DOWN)
         self.app.quit()
 
 

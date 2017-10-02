@@ -6,12 +6,15 @@ import unittest
 
 from appium import webdriver
 
-# Returns abs path relative to this file and not cwd
-from app.constants.messages import DRIVER_SUCCESS, TEAR_DOWN
+
+from app.constants.messages import DRIVER_SUCCESS_MSG, TEAR_DOWN_MSG, STARTING_MSG, CONNECTING_MSG, LOCALLY_MSG, \
+    REMOTELY_MSG, SET_UP_MSG, PLATFORM_NAME_MSG, PLATFORM_VERSION_MSG, DEVICE_NAME_MSG, APP_FILE_MSG, COUNTRY_MSG
+from app.constants.saucelabs import USER_NAME, ACCESS_KEY, SAUCELABS_URL, LOCAL_URL, HTTPS_URL, HTTP_URL
 from app.screens import WelcomeScreen
 from constants.countries import ARG
-from constants.platforms import ANDROID, V5_O1_O1, LOLLIPOP, APK_FILE
+from constants.platforms import ANDROID, V5_O1_O1, LOLLIPOP, APK_FILE, APPIUM_V1_O6_O4, V7_O0
 
+# Returns abs path relative to this file and not cwd
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
@@ -21,8 +24,11 @@ class BaseTest(unittest.TestCase):
 
     PLATFORM_NAME = ANDROID
     PLATFORM_VERSION = V5_O1_O1
+    # PLATFORM_VERSION = V7_O0
     DEVICE_NAME = LOLLIPOP
     APP = APK_FILE
+    APPIUM_VERSION = None
+    # APPIUM_VERSION = APPIUM_V1_O6_O4
     COUNTRY = ARG
 
     desired_caps = {}
@@ -32,28 +38,39 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         pass
 
-        logging.info("Setting Up Mobile Capabilities.")
+        logging.info(SET_UP_MSG)
         self.desired_caps['platformName'] = self.PLATFORM_NAME
         self.desired_caps['platformVersion'] = self.PLATFORM_VERSION
         self.desired_caps['deviceName'] = self.DEVICE_NAME
         self.desired_caps['app'] = PATH("../resources/" + self.PLATFORM_NAME + "/" + self.APP)
         self.desired_caps['noReset'] = False
+        self.desired_caps['appiumVersion'] = self.APPIUM_VERSION
 
         self.show_capabilities()
-        self.launch_app()
+
+        if self.desired_caps['appiumVersion'] is None:
+            self.launch_app_local()
+        else:
+            self.launch_app_remote()
+
         self.navigate_to_home()
 
     def show_capabilities(self):
-        self.logger.info("Platform Name: [" + self.desired_caps['platformName'] + "]")
-        self.logger.info("platform Version: [" + self.desired_caps['platformVersion'] + "]")
-        self.logger.info("Device Name: [" + self.desired_caps['deviceName'] + "]")
-        self.logger.info("App File: [" + self.desired_caps['app'] + "]")
-        self.logger.info("Country: [" + self.COUNTRY + "]")
+        self.logger.info(PLATFORM_NAME_MSG + self.desired_caps['platformName'] + "]")
+        self.logger.info(PLATFORM_VERSION_MSG + self.desired_caps['platformVersion'] + "]")
+        self.logger.info(DEVICE_NAME_MSG + self.desired_caps['deviceName'] + "]")
+        self.logger.info(APP_FILE_MSG + self.desired_caps['app'] + "]")
+        self.logger.info(COUNTRY_MSG + self.COUNTRY + "]")
 
-    def launch_app(self):
-        self.logger.info("Starting " + self.PLATFORM_NAME + " driver please wait...")
-        self.app = webdriver.Remote('http://localhost:4723/wd/hub', self.desired_caps)
-        self.logger.info(self.PLATFORM_NAME + DRIVER_SUCCESS)
+    def launch_app_local(self):
+        self.logger.info(STARTING_MSG + self.PLATFORM_NAME + LOCALLY_MSG)
+        self.app = webdriver.Remote(HTTP_URL + LOCAL_URL, self.desired_caps)
+        self.logger.info(self.PLATFORM_NAME + DRIVER_SUCCESS_MSG)
+
+    def launch_app_remote(self):
+        self.logger.info(CONNECTING_MSG + self.PLATFORM_NAME + REMOTELY_MSG)
+        self.app = webdriver.Remote(HTTPS_URL + USER_NAME + ":" + ACCESS_KEY + SAUCELABS_URL, self.desired_caps)
+        self.logger.info(self.PLATFORM_NAME + DRIVER_SUCCESS_MSG)
 
     def navigate_to_home(self):
         welcome_screen = WelcomeScreen(self.app)
@@ -61,7 +78,7 @@ class BaseTest(unittest.TestCase):
 
     def tearDown(self):
         pass
-        self.logger.info(TEAR_DOWN)
+        self.logger.info(TEAR_DOWN_MSG)
         self.app.quit()
 
 

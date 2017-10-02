@@ -7,7 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from app import locators
 from app.constants.countries import ARGENTINA, COLOMBIA, MEXICO, ARG, COL, MEX
 from app.constants.err import ERR_001
-from app.constants.messages import TOUCH_ARG_LINK, TOUCH_COL_LINK, TOUCH_MEX_LINK, WAITING_FOR
+from app.constants.messages import TOUCH_ARG_LINK_MSG, TOUCH_COL_LINK_MSG, TOUCH_MEX_LINK_MSG, WAITING_FOR_MSG
 from app.constants.webelements import LINK
 
 
@@ -16,7 +16,7 @@ class BaseScreen(object):
         self.driver = driver
 
     def wait_for_element(self, locator, description, obj):
-        self.logger.info(WAITING_FOR + " [" + description + "] " + obj)
+        self.logger.info(WAITING_FOR_MSG + " [" + description + "] " + obj)
         WebDriverWait(self.driver, 100).until(lambda driver: driver.find_element_by_xpath(locator))
         return self.driver.find_element_by_xpath(locator)
 
@@ -27,17 +27,17 @@ class BaseScreen(object):
 class WelcomeScreen(BaseScreen):
     def touch_argentina(self):
         element = self.wait_for_element(locators.WelcomeScreen.ARGENTINA_LINK, ARGENTINA, LINK)
-        self.logger.info(TOUCH_ARG_LINK)
+        self.logger.info(TOUCH_ARG_LINK_MSG)
         element.click()
 
     def touch_colombia(self):
         element = self.wait_for_element(locators.WelcomeScreen.COLOMBIA_LINK, COLOMBIA, LINK)
-        self.logger.info(TOUCH_COL_LINK)
+        self.logger.info(TOUCH_COL_LINK_MSG)
         element.click()
 
     def touch_mexico(self):
         element = self.wait_for_element(locators.WelcomeScreen.MEXICO_LINK, MEXICO, LINK)
-        self.logger.info(TOUCH_MEX_LINK)
+        self.logger.info(TOUCH_MEX_LINK_MSG)
         element.click()
 
     def errhandler(self):

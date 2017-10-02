@@ -35,6 +35,7 @@ class BaseTest(unittest.TestCase):
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
     logger = logging.getLogger(__name__)
 
+
     def setUp(self):
         pass
 
@@ -74,8 +75,8 @@ class BaseTest(unittest.TestCase):
 
     def navigate_to_home(self):
         welcome_screen = WelcomeScreen(self.app)
-        login_screen = welcome_screen.select_country(self.COUNTRY)
-        login_screen.touch_seguir_como_invitado()
+        login_selection_screen = welcome_screen.select_country(self.COUNTRY)
+        login_selection_screen.touch_seguir_como_invitado()
 
     def tearDown(self):
         pass

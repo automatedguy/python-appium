@@ -58,15 +58,24 @@ class WelcomeScreen(BaseScreen):
             self.touch_mexico()
         else:
             self.errhandler()
-        return LoginScreen(self.driver)
+        return LoginSelectionScreen(self.driver)
 
 
-class LoginScreen(BaseScreen):
+class LoginSelectionScreen(BaseScreen):
     def __init__(self, driver):
-        super(LoginScreen, self).__init__(driver)
+        super(LoginSelectionScreen, self).__init__(driver)
         self.driver = driver
 
     def touch_seguir_como_invitado(self):
         element = self.wait_for_element(self, locators.LoginScreen.SEGUIR_COMO_INVITADO_LNK, SEGUIR_COMO_INVITADO, LINK)
         self.logger.info(SEGUIR_COMO_INVITADO_MSG)
         element.click()
+        return HomeScreen(self.driver)
+
+
+class HomeScreen(BaseScreen):
+    def __init__(self, driver):
+        super(HomeScreen, self).__init__(driver)
+        self.driver = driver
+
+

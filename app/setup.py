@@ -6,7 +6,6 @@ import unittest
 
 from appium import webdriver
 
-
 from app.constants.messages import DRIVER_SUCCESS_MSG, TEAR_DOWN_MSG, STARTING_MSG, CONNECTING_MSG, LOCALLY_MSG, \
     REMOTELY_MSG, SET_UP_MSG, PLATFORM_NAME_MSG, PLATFORM_VERSION_MSG, DEVICE_NAME_MSG, APP_FILE_MSG, COUNTRY_MSG, BRC
 from app.constants.saucelabs import USER_NAME, ACCESS_KEY, SAUCELABS_URL, LOCAL_URL, HTTPS_URL, HTTP_URL
@@ -21,7 +20,6 @@ PATH = lambda p: os.path.abspath(
 
 
 class BaseTest(unittest.TestCase):
-
     PLATFORM_NAME = ANDROID
     PLATFORM_VERSION = V5_O1_O1
     # PLATFORM_VERSION = V7_O0
@@ -34,7 +32,6 @@ class BaseTest(unittest.TestCase):
     desired_caps = {}
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
     logger = logging.getLogger(__name__)
-
 
     def setUp(self):
         pass
@@ -75,8 +72,8 @@ class BaseTest(unittest.TestCase):
 
     def navigate_to_home(self):
         welcome_screen = WelcomeScreen(self.app)
-        login_selection_screen = welcome_screen.select_country(self.COUNTRY)
-        login_selection_screen.touch_seguir_como_invitado()
+        self.login_selection_screen = welcome_screen.select_country(self.COUNTRY)
+        self.login_selection_screen.touch_seguir_como_invitado()
 
     def tearDown(self):
         pass

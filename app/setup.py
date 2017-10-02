@@ -33,6 +33,19 @@ class BaseTest(unittest.TestCase):
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
     logger = logging.getLogger(__name__)
 
+    @classmethod
+    def setUpClass(cls):
+        """On inherited classes, run our `setUp` method"""
+        # Inspired via http://stackoverflow.com/questions/1323455/python-unit-test-with-base-and-sub-class/17696807#17696807
+        if cls is not BaseTest and cls.setUp is not BaseTest.setUp:
+            orig_setUp = cls.setUp
+
+            def setUpOverride(self, *args, **kwargs):
+                BaseTest.setUp(self)
+                return orig_setUp(self, *args, **kwargs)
+
+            cls.setUp = setUpOverride
+
     def setUp(self):
         pass
 
@@ -73,7 +86,6 @@ class BaseTest(unittest.TestCase):
     def navigate_to_home(self):
         welcome_screen = WelcomeScreen(self.app)
         self.login_selection_screen = welcome_screen.select_country(self.COUNTRY)
-        self.login_selection_screen.touch_seguir_como_invitado()
 
     def tearDown(self):
         pass

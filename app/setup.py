@@ -8,6 +8,8 @@ from appium import webdriver
 
 # Returns abs path relative to this file and not cwd
 from app.screens import WelcomeScreen
+from constants.countries import ARG
+from constants.platforms import ANDROID, V5_O1_O1, LOLLIPOP, APK_FILE
 
 PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
@@ -15,11 +17,13 @@ PATH = lambda p: os.path.abspath(
 
 
 class BaseTest(unittest.TestCase):
-    PLATFORM_NAME = "Android"
-    PLATFORM_VERSION = "5.1.1"
-    DEVICE_NAME = "Android"
-    APP = "base.apk"
-    COUNTRY = "ARGENTINA"
+
+    PLATFORM_NAME = ANDROID
+    PLATFORM_VERSION = V5_O1_O1
+    DEVICE_NAME = LOLLIPOP
+    APP = APK_FILE
+    COUNTRY = ARG
+
     desired_caps = {}
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
     logger = logging.getLogger(__name__)

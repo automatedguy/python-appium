@@ -1,0 +1,7 @@
+ARG = "ARGENTINA"
+COL = "COLOMBIA"
+MEX = "MEXICO"
+
+ARGENTINA = "Argentina"
+COLOMBIA = "Colombia"
+MEXICO = "Mexico"

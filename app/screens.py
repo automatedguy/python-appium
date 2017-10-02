@@ -5,6 +5,10 @@ import logging
 from selenium.webdriver.support.wait import WebDriverWait
 
 from app import locators
+from app.constants.countries import ARGENTINA, COLOMBIA, MEXICO, ARG, COL, MEX
+from app.constants.err import ERR_001
+from app.constants.messages import TOUCH_ARG_LINK, TOUCH_COL_LINK, TOUCH_MEX_LINK, WAITING_FOR
+from app.constants.webelements import LINK
 
 
 class BaseScreen(object):
@@ -12,7 +16,7 @@ class BaseScreen(object):
         self.driver = driver
 
     def wait_for_element(self, locator, description, obj):
-        self.logger.info("Waiting for: [" + description + "] " + obj)
+        self.logger.info(WAITING_FOR + " [" + description + "] " + obj)
         WebDriverWait(self.driver, 100).until(lambda driver: driver.find_element_by_xpath(locator))
         return self.driver.find_element_by_xpath(locator)
 
@@ -22,29 +26,29 @@ class BaseScreen(object):
 
 class WelcomeScreen(BaseScreen):
     def touch_argentina(self):
-        element = self.wait_for_element(locators.WelcomeScreen.ARGENTINA_LINK, "Argentina", "Link")
-        self.logger.info("Touching: [Argentina] link.")
+        element = self.wait_for_element(locators.WelcomeScreen.ARGENTINA_LINK, ARGENTINA, LINK)
+        self.logger.info(TOUCH_ARG_LINK)
         element.click()
 
     def touch_colombia(self):
-        element = self.wait_for_element(locators.WelcomeScreen.COLOMBIA_LINK, "Colombia", "Link")
-        self.logger.info("Touching: [Colombia] link.")
+        element = self.wait_for_element(locators.WelcomeScreen.COLOMBIA_LINK, COLOMBIA, LINK)
+        self.logger.info(TOUCH_COL_LINK)
         element.click()
 
     def touch_mexico(self):
-        element = self.wait_for_element(locators.WelcomeScreen.MEXICO_LINK, "México", "Link")
-        self.logger.info("Touching: [México] link.")
+        element = self.wait_for_element(locators.WelcomeScreen.MEXICO_LINK, MEXICO, LINK)
+        self.logger.info(TOUCH_MEX_LINK)
         element.click()
 
     def errhandler(self):
-        self.logger.error("Your input has not been recognised")
+        self.logger.error(ERR_001)
 
     def select_country(self, country):
-        if country == "ARGENTINA":
+        if country == ARG:
             self.touch_argentina()
-        elif country == "COLOMBIA":
+        elif country == COL:
             self.touch_colombia()
-        elif country == "MEXICO":
+        elif country == MEX:
             self.touch_mexico()
         else:
             self.errhandler()

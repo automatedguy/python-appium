@@ -1,0 +1,2 @@
+BUTTON = "Button"
+LINK = "Link"

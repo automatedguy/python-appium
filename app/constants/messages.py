@@ -4,6 +4,11 @@ TOUCH_ARG_LINK_MSG = "Touching: [Argentina] link."
 TOUCH_COL_LINK_MSG = "Touching: [Colombia] link."
 TOUCH_MEX_LINK_MSG = "Touching: [México] link."
 
+SEGUIR_COMO_INVITADO_MSG = "Touching: [SEGUIR COMO INVITADO] link."
+
+BRO = "["
+BRC = "]"
+
 WAITING_FOR_MSG = "Waiting for: "
 
 DRIVER_SUCCESS_MSG = " driver started successfully."

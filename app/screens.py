@@ -7,8 +7,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from app import locators
 from app.constants.countries import ARGENTINA, COLOMBIA, MEXICO, ARG, COL, MEX
 from app.constants.err import ERR_001
-from app.constants.messages import TOUCH_ARG_LINK_MSG, TOUCH_COL_LINK_MSG, TOUCH_MEX_LINK_MSG, WAITING_FOR_MSG
-from app.constants.webelements import LINK
+from app.constants.messages import TOUCH_ARG_LINK_MSG, TOUCH_COL_LINK_MSG, TOUCH_MEX_LINK_MSG, WAITING_FOR_MSG, \
+    SEGUIR_COMO_INVITADO_MSG
+from app.constants.webelements import LINK, SEGUIR_COMO_INVITADO
 
 
 class BaseScreen(object):
@@ -52,3 +53,11 @@ class WelcomeScreen(BaseScreen):
             self.touch_mexico()
         else:
             self.errhandler()
+        return LoginScreen(self)
+
+
+class LoginScreen(BaseScreen):
+    def touch_seguir_como_invitado(self):
+        element = self.wait_for_element(locators.LoginScreen.SEGUIR_COMO_INVITADO_LNK, SEGUIR_COMO_INVITADO, LINK)
+        self.logger.info(SEGUIR_COMO_INVITADO_MSG)
+        element.click()

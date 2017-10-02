@@ -8,7 +8,7 @@ from appium import webdriver
 
 
 from app.constants.messages import DRIVER_SUCCESS_MSG, TEAR_DOWN_MSG, STARTING_MSG, CONNECTING_MSG, LOCALLY_MSG, \
-    REMOTELY_MSG, SET_UP_MSG, PLATFORM_NAME_MSG, PLATFORM_VERSION_MSG, DEVICE_NAME_MSG, APP_FILE_MSG, COUNTRY_MSG
+    REMOTELY_MSG, SET_UP_MSG, PLATFORM_NAME_MSG, PLATFORM_VERSION_MSG, DEVICE_NAME_MSG, APP_FILE_MSG, COUNTRY_MSG, BRC
 from app.constants.saucelabs import USER_NAME, ACCESS_KEY, SAUCELABS_URL, LOCAL_URL, HTTPS_URL, HTTP_URL
 from app.screens import WelcomeScreen
 from constants.countries import ARG
@@ -56,11 +56,11 @@ class BaseTest(unittest.TestCase):
         self.navigate_to_home()
 
     def show_capabilities(self):
-        self.logger.info(PLATFORM_NAME_MSG + self.desired_caps['platformName'] + "]")
-        self.logger.info(PLATFORM_VERSION_MSG + self.desired_caps['platformVersion'] + "]")
-        self.logger.info(DEVICE_NAME_MSG + self.desired_caps['deviceName'] + "]")
-        self.logger.info(APP_FILE_MSG + self.desired_caps['app'] + "]")
-        self.logger.info(COUNTRY_MSG + self.COUNTRY + "]")
+        self.logger.info(PLATFORM_NAME_MSG + self.desired_caps['platformName'] + BRC)
+        self.logger.info(PLATFORM_VERSION_MSG + self.desired_caps['platformVersion'] + BRC)
+        self.logger.info(DEVICE_NAME_MSG + self.desired_caps['deviceName'] + BRC)
+        self.logger.info(APP_FILE_MSG + self.desired_caps['app'] + BRC)
+        self.logger.info(COUNTRY_MSG + self.COUNTRY + BRC)
 
     def launch_app_local(self):
         self.logger.info(STARTING_MSG + self.PLATFORM_NAME + LOCALLY_MSG)
@@ -74,7 +74,8 @@ class BaseTest(unittest.TestCase):
 
     def navigate_to_home(self):
         welcome_screen = WelcomeScreen(self.app)
-        welcome_screen.select_country(self.COUNTRY)
+        login_screen = welcome_screen.select_country(self.COUNTRY)
+        login_screen.touch_seguir_como_invitado()
 
     def tearDown(self):
         pass
